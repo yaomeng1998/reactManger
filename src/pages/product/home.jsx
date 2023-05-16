@@ -2,8 +2,32 @@ import React, { useEffect, useState } from 'react'
 import { Card, Select, Input, Button, Space, Table, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { getPaginationList, getSeacch } from '../../api'
+import { useNavigate } from 'react-router-dom';
 
-//Table
+
+const data = [];
+
+export default function Home() {
+  const [data, setData] = useState([])
+  const [total, setTotal] = useState(0)
+  const [params, setParams] = useState({
+    pageNum: 1,
+    pageSize: 7,
+    searchName:'',
+    searchType:'productName'
+  })
+  var navigate =useNavigate()
+  useEffect(() => {
+    getPagination(1, 7)
+  }, [])
+  //去detail
+  var goDetail=(record)=>{navigate('detail',{
+    state:{
+      record
+    }
+  })
+}
+  //Table
 const columns = [
   {
     width: '200px',
@@ -36,25 +60,11 @@ const columns = [
     title: '操作',
     render: (_, record) => (
       <Space size="middle">
-        <a>详情修改</a>
+        <a onClick={()=>{goDetail(record)}}>详情修改</a>
       </Space>
     ),
   },
 ];
-const data = [];
-
-export default function Home() {
-  const [data, setData] = useState([])
-  const [total, setTotal] = useState(0)
-  const [params, setParams] = useState({
-    pageNum: 1,
-    pageSize: 7,
-    searchName:'',
-    searchType:'productName'
-  })
-  useEffect(() => {
-    getPagination(1, 7)
-  }, [])
   //获取分页数据
   var getPagination = (pageNum, pageSize) => {
     getPaginationList({ pageNum, pageSize }).then(res => {
