@@ -15,18 +15,6 @@ const error = (e) => {
 
 export default function Catecory() {
   const [data, setData] = useState([
-    {
-      key: '1',
-      name: 'John Brown',
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-    },
   ])
   const [subShow, setSubShow] = useState(true)
   const [firstList, setFirstList] = useState([])
@@ -68,22 +56,22 @@ export default function Catecory() {
     setIsModalOpen(true);
   };
   const handleOk = () => {
-    secondForm.validateFields().then(res=>{
+    secondForm.validateFields().then(res => {
       var { parentId, categoryName } = secondForm.getFieldsValue(true)
-    addList({ parentId, categoryName }).then(res => {
-      if (parentId == 0) showFirst()
-      else {
-        getSecondList({ 'parentId': parentId }).then(res => {
-          setData(res.data.data);
-        })
-      }
-    })
-    secondForm.resetFields()
-    setIsModalOpen(false);
-    }).catch(err=>{
+      addList({ parentId, categoryName }).then(res => {
+        if (parentId == 0) showFirst()
+        else {
+          getSecondList({ 'parentId': parentId }).then(res => {
+            setData(res.data.data);
+          })
+        }
+      })
+      secondForm.resetFields()
+      setIsModalOpen(false);
+    }).catch(err => {
       error('分类名称未填')
     })
-    
+
   };
   const handleCancel = () => {
     secondForm.resetFields()
@@ -109,7 +97,7 @@ export default function Catecory() {
 
       })
       setIsUpdate(false);
-    }).catch(err=>{
+    }).catch(err => {
       error('分类名称未填')
     })
   };
@@ -156,8 +144,8 @@ export default function Catecory() {
       <Card
         title={!subShow ? <span onClick={showFirst} style={{ cursor: 'pointer' }}>一级分类列表<ArrowRightOutlined style={{ marginRight: 20, marginLeft: 20, cursor: 'pointer' }} />{record.name}</span> : <span>一级分类列表 </span>} extra={<><Button onClick={showModal} type='primary' ><><PlusOutlined />添加</></Button></>} style={{ width: '100%' }}>
         <Table
-          size='middle'
-          rowKey='_id'
+          pagination={{ defaultPageSize: 7 }}
+          rowKey={'_id'}
           bordered
           columns={columns} dataSource={data} />
       </Card>
