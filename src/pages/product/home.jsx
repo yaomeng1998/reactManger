@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Select, Input, Button, Space, Table, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getPaginationList, getSeacch } from '../../api'
+import { getPaginationList, getSeacch,modifyStatus } from '../../api'
 import { useNavigate } from 'react-router-dom';
-
-
-const data = [];
-
+import { func } from 'prop-types';
 export default function Home() {
   const [data, setData] = useState([])
   const [total, setTotal] = useState(0)
+  const [pNum, setPageNum] = useState(1)
   const [params, setParams] = useState({
-    pageNum: 1,
+    pageNum: pNum,
     pageSize: 7,
     searchName:'',
     searchType:'productName'
@@ -49,8 +47,8 @@ const columns = [
     render: (a, b) => {
       return (
         <div>
-          {b.status == 1 ? <Button style={{ display: 'block', margin: '0 auto' }} type='primary'>下架</Button> : ''}
-          <div style={{ textAlign: 'center' }}>{b.status == 1 ? '在售' : '下架'}</div>
+         <Button onClick={()=>{modify(b)}} style={{ display: 'block', margin: '0 auto' }} type='primary'>{b.status == 1 ? '下架' : '上架'}</Button> 
+          <div style={{ textAlign: 'center' }}>{b.status == 1 ? '在售' : '已下架'}</div>
         </div>
       )
     }
@@ -67,6 +65,7 @@ const columns = [
 ];
   //获取分页数据
   var getPagination = (pageNum, pageSize) => {
+    setPageNum(pageNum)
     getPaginationList({ pageNum, pageSize }).then(res => {
       setData(res.data.data.list)
       setTotal(res.data.data.total)
@@ -76,14 +75,25 @@ const columns = [
   var getSearchList = () => {
    if(params.searchName){
     getSeacch(params).then(res => {
-      console.log(res.data.data.list);
       setData(res.data.data.list)
     })
    }else{
     getPagination(1,7)
    }
   }
-
+//修改状态
+  function modify(b){
+    if(b.status==1){
+      var status=2
+    }
+    else{
+      var status=1
+    }
+    var productId =b._id
+    modifyStatus({productId,status}).then(res=>{
+    })
+    getPagination(pNum,7)
+  }
   return (
     <Card
       style={{ width: '100%' }}

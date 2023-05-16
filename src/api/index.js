@@ -31,6 +31,16 @@ export function getPaginationList(params) {
         params: params
     })
 }
+//根据分类ID获取分类
+export function getCategoryById(params) {
+    return axios.get(baseUrl + '/manage/category/info', {
+        params: params
+    })
+}
+//修改status
+export function modifyStatus(data) {
+    return axios.post(baseUrl + '/manage/product/updateStatus',data)
+}
 //搜索商品分页列表
 export function getSeacch(params) {
     const { pageNum, pageSize, searchType, searchName } = params
