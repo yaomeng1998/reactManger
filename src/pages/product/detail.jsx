@@ -22,24 +22,12 @@ export default function Detail() {
       }
     fetchData();
   }, []);
-  // useEffect(async ()=>{
-  //   // getCategoryById({categoryId}).then(
-  //   //   res=>{
-  //   //     console.log(1,res.data);
-  //   //   }
-  //   // )
-  //   // getCategoryById({pCategoryId}).then(
-  //   //   res=>{
-  //   //     console.log(2,res.data);
-  //   //   }
-  //   // )
-  //   const results=await Promise.all([getCategoryById({categoryId}),getCategoryById({pCategoryId})])
-  // },[])
+  
   return (
     <Card
       style={{ width: '100%' }}
       title={
-        <div style={{cursor:'pointer'}} onClick={()=>{navigate(-1)}}><ArrowLeftOutlined style={{ marginRight: 15 }} />商品详情</div>
+        <div style={{cursor:'pointer',fontSize:20}} onClick={()=>{navigate(-1)}}><ArrowLeftOutlined style={{ marginRight: 15 }} />商品详情</div>
       } extra={<a href="#"></a>}>
       <>
         <List bordered>

@@ -5,13 +5,13 @@ var baseUrl = 'http://localhost:3000'
 export function login(data) {
     return axios.post(baseUrl + '/login', data)
 }
-//获取一级列表
+//获取列表
 export function getFirstList(params) {
     return axios.get(baseUrl + '/manage/category/list', {
-        params: params
+        params: 0
     })
 }
-//获取二级列表
+//获取列表
 export function getSecondList(params) {
     return axios.get(baseUrl + '/manage/category/list', {
         params: params

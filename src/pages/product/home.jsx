@@ -123,7 +123,7 @@ const columns = [
         </>
       }
 
-      extra={<><Button type='primary'><><PlusOutlined style={{ margin: '0 10px' }} />添加商品</></Button></>}>
+      extra={<><Button type='primary' onClick={()=>{navigate('add-updateProduct')}}><><PlusOutlined style={{ margin: '0 10px' }} />添加商品</></Button></>}>
       <Table
         pagination={{
           defaultPageSize: 7,
