@@ -41,6 +41,14 @@ export function getCategoryById(params) {
 export function modifyStatus(data) {
     return axios.post(baseUrl + '/manage/product/updateStatus',data)
 }
+//添加商品
+export function addProduct(data) {
+    return axios.post(baseUrl + '/manage/product/add',data)
+}
+//添加商品
+export function deleteImg(data) {
+    return axios.post(baseUrl + '/manage/img/delete',data)
+}
 //搜索商品分页列表
 export function getSeacch(params) {
     const { pageNum, pageSize, searchType, searchName } = params

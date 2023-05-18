@@ -49,7 +49,7 @@ export default function Detail() {
           <span className='ItemName'>商品图片：<span className='item'>
             <img src="https://th.bing.com/th/id/R.91b4dcc3e03d2e3ad84513bc4c03e05f?rik=XGKwZjybdfFjfA&riu=http%3a%2f%2fcdn.sdk.caohua.com%2fwww%2fzhuanqu%2f15260284934608.jpg&ehk=gEyd1oNUAo4uF1gTDvDtD%2fO8%2f8LFxbtsLCNtvdCMFkw%3d&risl=&pid=ImgRaw&r=0" alt="" />
             {record.imgs.map(res=>{
-                return <img key={res} src={'http://localhost:5000/upload/'+res} alt="" />
+                return <img key={res} src={'http://10.6.30.62:5000/upload/'+res} alt="" />
             })}
             </span></span>
         </List.Item>
