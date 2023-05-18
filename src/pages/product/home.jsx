@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Select, Input, Button, Space, Table, Tag } from 'antd';
+import { Card, Select, Input, Button, Table, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getPaginationList, getSeacch,modifyStatus } from '../../api'
+import { getPaginationList, getSeacch, modifyStatus } from '../../api'
 import { useNavigate } from 'react-router-dom';
 import { func } from 'prop-types';
 export default function Home() {
@@ -11,58 +11,69 @@ export default function Home() {
   const [params, setParams] = useState({
     pageNum: pNum,
     pageSize: 7,
-    searchName:'',
-    searchType:'productName'
+    searchName: '',
+    searchType: 'productName'
   })
-  var navigate =useNavigate()
+  var navigate = useNavigate()
   useEffect(() => {
     getPagination(1, 7)
   }, [])
   //去detail
-  var goDetail=(record)=>{navigate('detail',{
-    state:{
-      record
-    }
-  })
-}
+  var goDetail = (record) => {
+    navigate('detail', {
+      state: {
+        record
+      }
+    })
+  }
+  var goUpdate = (record) => {
+    navigate('add-updateProduct',{
+        state:{
+          record
+        }
+      })
+  }
   //Table
-const columns = [
-  {
-    width: '200px',
-    title: '商家名称',
-    dataIndex: 'name',
-  },
-  {
-    width: '500px',
-    title: '商品描述',
-    dataIndex: 'desc',
-  },
-  {
-    title: '价格',
-    dataIndex: 'price',
-  },
-  {
-    title: '状态',
-    dataIndex: 'address',
-    render: (a, b) => {
-      return (
-        <div>
-         <Button onClick={()=>{modify(b)}} style={{ display: 'block', margin: '0 auto' }} type='primary'>{b.status == 1 ? '下架' : '上架'}</Button> 
-          <div style={{ textAlign: 'center' }}>{b.status == 1 ? '在售' : '已下架'}</div>
-        </div>
-      )
-    }
-  },
+  const columns = [
+    {
+      width: '200px',
+      title: '商家名称',
+      dataIndex: 'name',
+    },
+    {
+      width: '500px',
+      title: '商品描述',
+      dataIndex: 'desc',
+    },
+    {
+      title: '价格',
+      dataIndex: 'price',
+    },
+    {
+      title: '状态',
+      dataIndex: 'address',
+      render: (a, b) => {
+        return (
+          <div>
+            <Button onClick={() => { modify(b) }} style={{ display: 'block', margin: '0 auto' }} type='primary'>{b.status == 1 ? '下架' : '上架'}</Button>
+            <div style={{ textAlign: 'center' }}>{b.status == 1 ? '在售' : '已下架'}</div>
+          </div>
+        )
+      }
+    },
 
-  {
-    title: '操作',
-    render: (_, record) => (
-      <Space size="middle">
-        <a onClick={()=>{goDetail(record)}}>详情修改</a>
-      </Space>
-    ),
-  },
-];
+    {
+      title: '操作',
+      render: (_, record) => (
+
+        <div>
+          <a onClick={() => { goDetail(record) }}>详情</a>
+          <br />
+          <a onClick={() => { goUpdate(record) }}>修改</a>
+        </div>
+      ),
+    },
+  ];
   //获取分页数据
   var getPagination = (pageNum, pageSize) => {
     setPageNum(pageNum)
@@ -73,26 +84,26 @@ const columns = [
   }
   //获取搜索数据
   var getSearchList = () => {
-   if(params.searchName){
-    getSeacch(params).then(res => {
-      setData(res.data.data.list)
-    })
-   }else{
-    getPagination(1,7)
-   }
+    if (params.searchName) {
+      getSeacch(params).then(res => {
+        setData(res.data.data.list)
+      })
+    } else {
+      getPagination(1, 7)
+    }
   }
-//修改状态
-  function modify(b){
-    if(b.status==1){
-      var status=2
+  //修改状态
+  function modify(b) {
+    if (b.status == 1) {
+      var status = 2
     }
-    else{
-      var status=1
+    else {
+      var status = 1
     }
-    var productId =b._id
-    modifyStatus({productId,status}).then(res=>{
+    var productId = b._id
+    modifyStatus({ productId, status }).then(res => {
     })
-    getPagination(pNum,7)
+    getPagination(pNum, 7)
   }
   return (
     <Card
@@ -100,7 +111,7 @@ const columns = [
       title={
         <>
           <Select
-            onChange={(value)=>{setParams({...params,searchType:value})}}
+            onChange={(value) => { setParams({ ...params, searchType: value }) }}
             value={params.searchType}
             style={{
               width: 120,
@@ -123,7 +134,7 @@ const columns = [
         </>
       }
 
-      extra={<><Button type='primary' onClick={()=>{navigate('add-updateProduct')}}><><PlusOutlined style={{ margin: '0 10px' }} />添加商品</></Button></>}>
+      extra={<><Button type='primary' onClick={() => { navigate('add-updateProduct') }}><><PlusOutlined style={{ margin: '0 10px' }} />添加商品</></Button></>}>
       <Table
         pagination={{
           defaultPageSize: 7,
