@@ -86,10 +86,10 @@ export default function UpdateProduct() {
       }
     })
     targetOption.children = secondList
-    console.log(targetOption);
-    console.log(options);
+    // console.log(targetOption);
+    // console.log(options);
     setChildOptions(secondList)
-    // setOptions([...options]);
+    setOptions([...options]);
 
 
     targetOption.loading = false;
