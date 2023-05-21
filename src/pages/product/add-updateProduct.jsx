@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Card, Form, Input, Cascader, message, Upload, Button } from 'antd';
 import { ArrowLeftOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Navigate, useNavigate } from 'react-router';
-import { getFirstList, getSecondList, addProduct, deleteImg } from '../../api'
+import { getFirstList, getSecondList, addProduct, deleteImg, updateProduct } from '../../api'
 import ImgCrop from 'antd-img-crop';
 import RichEditor from './richEditor';
 const Item = Form.Item
@@ -61,7 +61,6 @@ export default function UpdateProduct() {
         targetOption.children = second
         setOptions([...first])
         form.setFieldsValue({ 'name': record.name, 'desc': record.desc, 'price': record.price, 'category': list })
-        console.log(record.imgs);
         var imgList = record.imgs.map((e, index) => {
           return {
             uid: -index,
@@ -92,9 +91,8 @@ export default function UpdateProduct() {
       }
     }
     if (file.status == 'removed') {
-      console.log(file);
-      deleteImg({ name: file.name }).then((res) => {
-        console.log(res);
+      console.log(file.name);
+      deleteImg({ name: file.name}).then((res) => {
         message.success('图片删除成功')
       })
     }
@@ -140,7 +138,6 @@ export default function UpdateProduct() {
       var list = imgRef.current.fileList.map((e) => {
         return e.name
       })
-
       if (values.category.length > 1) {
         var pCategoryId = values.category[0]
         var categoryId = values.category[1]
@@ -157,12 +154,22 @@ export default function UpdateProduct() {
         price: values.price,
         imgs: list
       }
-      console.log(params);
-      addProduct(params).then(res => {
-        console.log(res);
-        message.success('提交成功')
-        navigate(-1)
-      })
+      if (!location.state) {
+        addProduct(params).then(res => {
+          message.success('添加成功')
+          navigate(-1)
+        })
+      } else {
+        var upParams = {
+          ...params,
+          _id: location.state.record._id
+        }
+        updateProduct(upParams).then(res => {
+          message.success('更新成功')
+          navigate(-1)
+        })
+      }
+
     }).catch((err) => {
       message.error('提交失败')
     }

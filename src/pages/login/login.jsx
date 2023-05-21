@@ -18,6 +18,7 @@ const error = () => {
 
 export default function Login() {
   const navigate = useNavigate()
+  const user=!!userMemory.user._id
   const onFinish = async (values) => {
     try {
       var response = await login(values)
@@ -39,7 +40,7 @@ export default function Login() {
   };
   return (
     <>
-      <div className='login'>
+    {!user ? <div className='login'>
         <header className='login-header'>
           <img src={logo} alt="logo" />
           <h1>React项目：后台管理系统</h1>
@@ -98,7 +99,8 @@ export default function Login() {
             </Form.Item>
           </Form>
         </section>
-      </div>
+      </div> :<Navigate to="/admin" />}
+      
     </>
   )
 }

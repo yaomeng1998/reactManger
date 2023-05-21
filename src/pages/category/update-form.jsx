@@ -2,8 +2,11 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
 const UpdateForm = (props) => {
   const [form] = Form.useForm();
-  form.setFieldValue('kindName',props.categoryName)
-  props.getForm(form)
+  form.setFieldValue('kindName', props.categoryName)
+  useEffect(() => {
+    props.getForm(form)
+  }, [])
+  
   return (
     <Form
       form={form}
@@ -24,7 +27,7 @@ const UpdateForm = (props) => {
         name="kindName"
         rules={[{ required: true, message: '分类名称未填' }]}
       >
-        <Input/>
+        <Input />
       </Form.Item>
 
     </Form>

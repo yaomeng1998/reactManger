@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Select, Input, Button, Table, Tag } from 'antd';
+import { Card, Select, Input, Button, Table, Tag,message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getPaginationList, getSeacch, modifyStatus } from '../../api'
+import { getPaginationList, getSeacch, modifyStatus,deleteProduct } from '../../api'
 import { useNavigate } from 'react-router-dom';
 import { func } from 'prop-types';
 export default function Home() {
@@ -10,13 +10,13 @@ export default function Home() {
   const [pNum, setPageNum] = useState(1)
   const [params, setParams] = useState({
     pageNum: pNum,
-    pageSize: 7,
+    pageSize: 5,
     searchName: '',
     searchType: 'productName'
   })
   var navigate = useNavigate()
   useEffect(() => {
-    getPagination(1, 7)
+    getPagination(1, 5)
   }, [])
   //去detail
   var goDetail = (record) => {
@@ -55,8 +55,8 @@ export default function Home() {
       render: (a, b) => {
         return (
           <div>
-            <Button onClick={() => { modify(b) }} style={{ display: 'block', margin: '0 auto' }} type='primary'>{b.status == 1 ? '下架' : '上架'}</Button>
-            <div style={{ textAlign: 'center' }}>{b.status == 1 ? '在售' : '已下架'}</div>
+            <div style={{ textAlign: 'center',marginBottom:10,fontSize:17 }}>{b.status == 1 ? '在售' : '已下架'}</div>
+            <Button size='small' onClick={() => { modify(b) }} style={{ display: 'block', margin: '0 auto' }} type='primary'>{b.status == 1 ? '下架' : '上架'}</Button>
           </div>
         )
       }
@@ -70,6 +70,8 @@ export default function Home() {
           <a onClick={() => { goDetail(record) }}>详情</a>
           <br />
           <a onClick={() => { goUpdate(record) }}>修改</a>
+          <br />
+          <a onClick={() => { deletePro(record) }}>删除</a>
         </div>
       ),
     },
@@ -89,7 +91,7 @@ export default function Home() {
         setData(res.data.data.list)
       })
     } else {
-      getPagination(1, 7)
+      getPagination(1, 5)
     }
   }
   //修改状态
@@ -103,8 +105,18 @@ export default function Home() {
     var productId = b._id
     modifyStatus({ productId, status }).then(res => {
     })
-    getPagination(pNum, 7)
+    getPagination(pNum, 5)
   }
+//删除商品
+var deletePro=(record)=>{
+  deleteProduct({_id:record._id}).then(
+    res=>{
+      message.success('删除成功')
+      getPagination(pNum,5)
+    }
+  )
+  console.log(record);
+}
   return (
     <Card
       style={{ width: '100%' }}
@@ -137,7 +149,8 @@ export default function Home() {
       extra={<><Button type='primary' onClick={() => { navigate('add-updateProduct') }}><><PlusOutlined style={{ margin: '0 10px' }} />添加商品</></Button></>}>
       <Table
         pagination={{
-          defaultPageSize: 7,
+          current:pNum,
+          defaultPageSize: 5,
           total: total,
           onChange: (pageNum, pageSize) => { getPagination(pageNum, pageSize) }
         }}

@@ -1,11 +1,12 @@
 import { Button, Checkbox, Form, Input, Select } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 const AddForm = (props) => {
     const [form] = Form.useForm();
     const {firstList,parentId}=props
-    console.log(props);
     form.setFieldValue('parentId',String(parentId))
-    props.getForm(form)
+    useEffect(()=>{
+        props.getForm(form)
+    },[])
     return (
         <Form
             form={form}
@@ -25,7 +26,7 @@ const AddForm = (props) => {
                     <Select.Option value='0'>一级分类</Select.Option>
                     {
                         firstList.map(res=>{
-                            return <Select.Option value={res._id}>{res.name}</Select.Option>
+                            return <Select.Option key={res._id} value={res._id}>{res.name}</Select.Option>
                         })
                     }
                 </Select>

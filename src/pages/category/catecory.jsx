@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Button, Space, Table, Tag, message, Modal } from 'antd';
+import { Card, Button, Space, Table, Tag, message, Modal, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { getFirstList, addList, updateFirstList, getSecondList } from '../../api'
+import { getFirstList, addList, updateFirstList, getSecondList, deleteCategory } from '../../api'
 import UpdateForm from './update-form'
 import AddForm from './add-form'
 import { ArrowRightOutlined } from '@ant-design/icons';
@@ -29,7 +29,7 @@ export default function Catecory() {
     })
     getFirstList().then(res => {
       setSubShow(true)
-      if (res.data.status != 0) success('获取一级列表失败')
+      if (res.data.status != 0) error('获取一级列表失败')
       else {
         setData(res.data.data)
         setFirstList(res.data.data)
@@ -104,6 +104,25 @@ export default function Catecory() {
   const updateCancel = () => {
     setIsUpdate(false);
   };
+  //删除分类
+  const confirm = (record) => {
+    console.log(record);
+    deleteCategory({ _id: record._id }).then(res => {
+      if (record.parentId == '0') showFirst()
+      else {
+        console.log('2222');
+        getSecondList({ 'parentId': record.parentId }).then(res => {
+          setData(res.data.data);
+        })
+      }
+
+    })
+    message.success('删除成功');
+  };
+  const cancel = (e) => {
+    console.log(e);
+    message.error('取消删除');
+  };
   const columns = [
     {
       title: '分类的名称',
@@ -121,6 +140,15 @@ export default function Catecory() {
               size='middle'>
               <a onClick={() => { updateCategory(record) }}>修改分类</a>
               {subShow ? <a onClick={() => showChildKind(record)}>查看子分类</a> : <a></a>}
+              <Popconfirm
+                title="确定删除?"
+                onConfirm={() => { confirm(record) }}
+                onCancel={cancel}
+                okText="是"
+                cancelText="否"
+              >
+                <a>删除分类</a>
+              </Popconfirm>
             </Space>
           </>
         )
@@ -144,7 +172,7 @@ export default function Catecory() {
       <Card
         title={!subShow ? <span onClick={showFirst} style={{ cursor: 'pointer' }}>一级分类列表<ArrowRightOutlined style={{ marginRight: 20, marginLeft: 20, cursor: 'pointer' }} />{record.name}</span> : <span>一级分类列表 </span>} extra={<><Button onClick={showModal} type='primary' ><><PlusOutlined />添加</></Button></>} style={{ width: '100%' }}>
         <Table
-          pagination={{ defaultPageSize: 7 }}
+          pagination={{ defaultPageSize: 5 }}
           rowKey={'_id'}
           bordered
           columns={columns} dataSource={data} />

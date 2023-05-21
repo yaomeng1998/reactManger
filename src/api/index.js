@@ -1,5 +1,6 @@
 import axios from 'axios'
-var baseUrl = 'http://localhost:3000'
+// var baseUrl = 'http://localhost:3000'
+var baseUrl='/api'
 
 //登录
 export function login(data) {
@@ -37,6 +38,10 @@ export function getCategoryById(params) {
         params: params
     })
 }
+//删除分类
+export function deleteCategory(data) {
+    return axios.post(baseUrl + '/manage/category/delete',data)
+}
 //修改status
 export function modifyStatus(data) {
     return axios.post(baseUrl + '/manage/product/updateStatus',data)
@@ -45,9 +50,49 @@ export function modifyStatus(data) {
 export function addProduct(data) {
     return axios.post(baseUrl + '/manage/product/add',data)
 }
-//添加商品
+//删除图片
 export function deleteImg(data) {
     return axios.post(baseUrl + '/manage/img/delete',data)
+}
+//删除商品
+export function deleteProduct(data) {
+    return axios.post(baseUrl + '/manage/product/delete',data)
+}
+//更新商品
+export function updateProduct(data) {
+    return axios.post(baseUrl + '/manage/product/update',data)
+}
+//更新商品
+export function getRoles() {
+    return axios.get(baseUrl + '/manage/role/list')
+}
+//添加角色
+export function addRole(data) {
+    return axios.post(baseUrl + '/manage/role/add',data)
+}
+//更新角色
+export function updateRole(data) {
+    return axios.post(baseUrl + '/manage/role/update',data)
+}
+//更新角色
+export function deleteRole(data) {
+    return axios.post(baseUrl + '/manage/role/delete',data)
+}
+//获取用户
+export function getUsers() {
+    return axios.get(baseUrl + '/manage/user/list')
+}
+//添加用户
+export function addUser(data) {
+    return axios.post(baseUrl + '/manage/user/add',data)
+}
+//更新用户
+export function updateUser(data) {
+    return axios.post(baseUrl + '/manage/user/update',data)
+}
+//删除用户
+export function deleteUser(data) {
+    return axios.post(baseUrl + '/manage/user/delete',data)
 }
 //搜索商品分页列表
 export function getSeacch(params) {

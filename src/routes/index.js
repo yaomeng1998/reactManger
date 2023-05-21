@@ -12,6 +12,7 @@ import User from '../pages/user'
 import Detail from '../pages/product/detail'
 import Update from '../pages/product/add-updateProduct'
 import ProductHome from '../pages/product/home'
+import NotFound from '../pages/not-found/not-found';
 export default [
     {
         path: '/login',
@@ -76,5 +77,9 @@ export default [
     {
         path: '/',
         element: <Navigate to="/admin" />
+    },
+    {
+        path:'*',
+        element:<NotFound/>
     }
 ]
